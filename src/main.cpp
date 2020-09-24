@@ -7,6 +7,10 @@
 #include "esp_adc_cal.h"
 #include <WiFiUdp.h>
 
+#include <Adafruit_GFX.h>    // Core graphics library
+#include <Adafruit_ST7789.h> // Hardware-specific library for ST7789
+
+
 #ifndef TFT_DISPOFF
 #define TFT_DISPOFF 0x28
 #endif
@@ -64,10 +68,12 @@ int vref = 1100;
 
 #define BLACK 0x0000
 #define WHITE 0xFFFF
-TFT_eSPI tft = TFT_eSPI(); // Invoke custom library
+//TFT_eSPI tft = TFT_eSPI(); // Invoke custom library
 Button2 btn1(BUTTON_1);
 Button2 btn2(BUTTON_2);
 
+SPIClass tftSpi(VSPI);
+Adafruit_ST7789 tft = Adafruit_ST7789(&tftSpi, TFT_CS, TFT_DC, TFT_RST);
 
 const char* ssid = "Livebox-75C0";
 const char* password =  "ipW2j3EzJQg6LF9Er6";
@@ -126,7 +132,7 @@ void setup() {
 	// put your setup code here, to run once:
 	Serial.begin(115200);
 	WiFi.begin(ssid, password);
-
+	//tftSpi.begin(TFT_SCLK, )
 
 	ledcSetup(motorChannel1, motorFreq, motorResolution);
 	ledcSetup(motorChannel2, motorFreq, motorResolution);
@@ -139,7 +145,7 @@ void setup() {
 
 	pinMode(ADC_EN, OUTPUT);
 	digitalWrite(ADC_EN, HIGH);
-	tft.init();
+	tft.init(135, 240, SPI_MODE2);
 	tft.setRotation(0);
 	tft.fillScreen(TFT_BLACK);
 
