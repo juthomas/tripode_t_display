@@ -71,8 +71,8 @@ Button2 btn1(BUTTON_1);
 Button2 btn2(BUTTON_2);
 
 
-const char* ssid = "Livebox-75C0";
-const char* password =  "ipW2j3EzJQg6LF9Er6";
+const char* ssid = "Matrice";
+const char* password =  "QGmatrice";
 
 WiFiUDP Udp;
 unsigned int localUdpPort = 49141;
@@ -232,9 +232,12 @@ void drawMotorsActivity()
 {
 	tft.fillScreen(TFT_BLACK);
 	tft.setCursor(0, 0);
-	tft.printf("ssid : %s\nip : %s\nudp port : %d", ssid,WiFi.localIP().toString().c_str(), localUdpPort);
+	tft.printf("Ssid : %s\n\nIp : %s\n\nUdp port : %d\n\n", ssid,WiFi.localIP().toString().c_str(), localUdpPort);
+	uint16_t v = analogRead(ADC_PIN);
+	float battery_voltage = ((float)v / 4095.0) * 2.0 * 3.3 * (vref / 1000.0);
+	tft.printf("Voltage : %.2fv\n", battery_voltage);
 
-	uint32_t color1 = TFT_BLUE;
+	//uint32_t color1 = TFT_BLUE;
 	uint32_t color2 = TFT_WHITE;
 	tft.drawCircle(67, 120 , 26, color2);
 	tft.drawCircle(27, 190 , 26, color2);
